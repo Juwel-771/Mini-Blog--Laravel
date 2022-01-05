@@ -31,6 +31,8 @@ class PostController extends Controller
         
         $user->post()->save($post);
 
+        return redirect( route('post_index'))->with('status','Post Added');
+
     }
 
     /**
@@ -63,7 +65,9 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::find($id);
+
+        return view('editpost',['posts'=>$post]);
     }
 
     /**
@@ -75,7 +79,12 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = Post::find($id);
+
+        $post->title=$request->title;
+        $post->body=$request->body;
+        $post->save();
+        return redirect( route('dashboard'))->with('status','Post Updated');
     }
 
     /**
@@ -86,6 +95,7 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Post::destroy($id);
+        return redirect( route('dashboard'))->with('status','Post Deleted');
     }
 }
